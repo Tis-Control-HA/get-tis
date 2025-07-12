@@ -2,7 +2,7 @@
 # shellcheck shell=bash
 
 # Define variables
-HOMEASSISTANT_CONFIG="/config"
+HOMEASSISTANT_CONFIG="/homeassistant"
 ADDONS_DIR="/addons"
 CUSTOM_COMPONENTS_DIR="${HOMEASSISTANT_CONFIG}/custom_components"
 INTEGRATION_REPO_URL="https://github.com/Tis-Control-HA/tis_integration"
