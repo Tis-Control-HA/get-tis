@@ -1,0 +1,103 @@
+#!/usr/bin/with-contenv bashio
+# shellcheck shell=bash
+
+# Define variables
+HOMEASSISTANT_CONFIG="/config"
+ADDONS_DIR="/addons"
+CUSTOM_COMPONENTS_DIR="${HOMEASSISTANT_CONFIG}/custom_components"
+INTEGRATION_REPO_URL="https://github.com/Tis-Control-HA/tis_integration"
+INTEGRATION_REPO_NAME="tis_integration"
+ADDON_REPO_URL="https://github.com/Tis-Control-HA/tis-addon"
+ADDON_REPO_NAME="home-assistant-addon"
+
+bashio::log.info "------------------------------------"
+bashio::log.info "Starting TIS integration and addon installation..."
+bashio::log.info "------------------------------------"
+
+# Ensure custom_components folder exists
+bashio::log.info "Ensuring custom_components folder exists..."
+if ! bashio::fs.directory_exists "$CUSTOM_COMPONENTS_DIR"; then
+    bashio::log.info "Creating custom_components directory at $CUSTOM_COMPONENTS_DIR..."
+    mkdir -p "$CUSTOM_COMPONENTS_DIR"
+    if [ $? -ne 0 ]; then
+        bashio::exit.nok "Failed to create custom_components directory"
+    fi
+else
+    bashio::log.info "custom_components directory already exists."
+fi
+
+# Navigate to custom_components folder
+cd "$CUSTOM_COMPONENTS_DIR" || bashio::exit.nok "Could not navigate to custom_components directory"
+
+# Clone or update the integration repository
+if ! bashio::fs.directory_exists "$INTEGRATION_REPO_NAME"; then
+    bashio::log.info "Cloning the integration repository..."
+    git clone --depth 1 "$INTEGRATION_REPO_URL"
+    if [ $? -ne 0 ]; then
+        bashio::exit.nok "Failed to clone the integration repository"
+    fi
+else
+    bashio::log.info "Integration repository already exists. Fetching latest changes..."
+    cd "$INTEGRATION_REPO_NAME" || bashio::exit.nok "Could not navigate to integration repository"
+    git fetch --depth 1 origin main
+    if [ $? -ne 0 ]; then
+        bashio::exit.nok "Failed to fetch the integration repository"
+    fi
+    git reset --hard origin/main
+    if [ $? -ne 0 ]; then
+        bashio::exit.nok "Failed to reset the integration repository to latest version"
+    fi
+    cd ..
+fi
+
+# Ensure addons folder exists
+bashio::log.info "Ensuring addons folder exists..."
+if ! bashio::fs.directory_exists "$ADDONS_DIR"; then
+    bashio::log.info "Creating addons directory at $ADDONS_DIR..."
+    mkdir -p "$ADDONS_DIR"
+    if [ $? -ne 0 ]; then
+        bashio::exit.nok "Failed to create addons directory"
+    fi
+else
+    bashio::log.info "addons directory already exists."
+fi
+
+# Navigate to addons folder
+cd "$ADDONS_DIR" || bashio::exit.nok "Could not navigate to addons directory"
+
+# Clone or update the addon repository
+if ! bashio::fs.directory_exists "$ADDON_REPO_NAME"; then
+    bashio::log.info "Cloning the addon repository..."
+    git clone --depth 1 "$ADDON_REPO_URL" "$ADDON_REPO_NAME"
+    if [ $? -ne 0 ]; then
+        bashio::exit.nok "Failed to clone the addon repository"
+    fi
+    cd "$ADDON_REPO_NAME" || bashio::exit.nok "Could not navigate to addon repository"
+else
+    bashio::log.info "Addon repository already exists. Fetching latest changes..."
+    cd "$ADDON_REPO_NAME" || bashio::exit.nok "Could not navigate to addon repository"
+    git fetch --depth 1 origin main
+    if [ $? -ne 0 ]; then
+        bashio::exit.nok "Failed to fetch the addon repository"
+    fi
+    git reset --hard origin/main
+    if [ $? -ne 0 ]; then
+        bashio::exit.nok "Failed to reset the addon repository to latest version"
+    fi
+fi
+
+# Install and pull Git LFS files for the addon repo
+bashio::log.info "Installing Git LFS and pulling LFS files..."
+git lfs install
+if [ $? -ne 0 ]; then
+    bashio::exit.nok "Failed to install Git LFS"
+fi
+
+git lfs pull
+if [ $? -ne 0 ]; then
+    bashio::exit.nok "Failed to pull Git LFS files in the addon repository"
+fi
+
+bashio::log.info "------------------------------------"
+bashio::log.info "Installation of integration and addon completed successfully!"
+bashio::log.info "------------------------------------"

@@ -1,0 +1,24 @@
+name: TIS Setup
+version: "0.0.2"
+slug: tis_get
+# image: "ghcr.io/hacs/{arch}-addon-get"
+description: The easiest way to Setup TIS for Home Assistant
+startup: once
+boot: manual
+url: "https://github.com/Tis-Control-HA/get-tis/tree/main/get_tis"
+arch:
+  - armhf
+  - armv7
+  - aarch64
+  - amd64
+init: false
+schema:
+  channel: list(current|development)?
+map:
+  - homeassistant_config:rw
+  - addons:rw
+  - all_addon_configs:rw
+  - backup:rw
+  - media:rw
+  - share:rw
+  - ssl:rw
