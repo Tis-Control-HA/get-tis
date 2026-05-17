@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en" class="dark">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WebRTC Voice Streamer</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        surface: '#1e293b', // slate-800
+                        bg: '#0f172a', // slate-900
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="./ui/css/styles.css" />
+</head>
+
+<body class="min-h-screen flex justify-center p-4 sm:p-6 bg-slate-900 text-slate-100 selection:bg-sky-500/30">
+    <div class="flex flex-col gap-y-2 config">
+        <div class="w-full flex items-center justify-center text-center">
+            <img class="rounded-2xl" src="./ui/assets/tis_logo.png" alt="TIS logo" height="150" width="150">
+        </div>
+        <div class="max-w-3xl w-full space-y-6">
+            <!-- Voice Streamer Card -->
+            <div class="bg-slate-800/80 backdrop-blur-md rounded-2xl p-5 sm:p-6 shadow-xl border border-slate-700">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-semibold text-white tracking-tight">Voice Streamer</h2>
+                    <span id="ws-status"
+                        class="px-3 py-1 rounded-full text-sm font-medium bg-slate-700 text-slate-300 border border-slate-600 transition-colors duration-300">Disconnected</span>
+                </div>
+
+                <canvas id="visualizer"
+                    class="w-full h-28 sm:h-32 bg-slate-900 rounded-xl mb-6 shadow-inner border border-slate-700/50"
+                    width="600" height="128"></canvas>
+
+                <div class="space-y-5">
+                    <div>
+                        <label for="media-player-select" class="block text-sm font-medium text-slate-400 mb-2">
+                            Select Media Player</label>
+                        <select id="media-player-select"
+                            class="w-full p-3 bg-slate-900 border border-slate-600 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all cursor-pointer">
+                            <option value="">Loading...</option>
+                        </select>
+                    </div>
+
+                </div>
+            </div>
+            <div class="flex justify-center w-full">
+                <button id="btn-mic"
+                    class="bg-sky-500 hover:bg-sky-600 p-6 text-white rounded-full font-medium cursor-pointer transition-all duration-200 flex flex-col items-center justify-center gap-2 w-[250px] h-[250px] shadow-lg shadow-sky-500/20 active:scale-[0.95] text-2xl">
+                    <img src="./ui/assets/mic_icon.svg" alt="mic stream button">
+                </button>
+            </div>
+            <p id="mic-error-msg" class="text-red-400 text-sm mt-3 text-center empty:hidden"></p>
+
+            <!-- Error Log Section -->
+            <div id="error-log-container"
+                class="hidden bg-red-950/40 border border-red-900/50 rounded-2xl p-5 shadow-lg">
+                <div class="flex items-center justify-between mb-3">
+                    <h3 class="text-red-400 font-semibold flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd"
+                                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        Error Logs
+                    </h3>
+                    <button id="clear-errors-btn"
+                        class="text-red-400 hover:text-red-300 text-sm px-3 py-1 rounded-lg hover:bg-red-900/30 border border-transparent hover:border-red-900/50 transition-all">Clear</button>
+                </div>
+                <div id="error-logs"
+                    class="space-y-2 max-h-48 overflow-y-auto font-mono text-xs sm:text-sm text-red-300/90 pr-2">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="./ui/js/app.js"></script>
+</body>
+
+</html>

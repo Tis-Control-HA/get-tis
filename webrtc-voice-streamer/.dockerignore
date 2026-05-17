@@ -1,0 +1,12 @@
+# Exclude git and dev docs
+.git/
+.github/
+docs/
+*.md
+
+# Exclude IDE and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+

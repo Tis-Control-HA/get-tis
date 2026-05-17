@@ -1,0 +1,36 @@
+name: "TIS Voice Streamer"
+version: "1.2.12"
+slug: "webrtc-voice-streamer"
+description: "WebRTC-based real-time audio streaming backend for Home Assistant voice applications"
+url: "https://github.com/KarimTIS/webrtc-voice-streamer"
+arch:
+  - aarch64
+  - amd64
+  - armv7
+init: false
+boot: auto
+homeassistant: "2023.12.0"
+map:
+  - config:rw
+host_network: true
+# ports:
+#   8443/tcp: 8443
+#   8555/udp: 8555
+#   8080/tcp: 8080
+ports_description:
+  8443/tcp: "HTTPS Web UI (direct access)"
+  8555/udp: "WebRTC media streams"
+  8080/tcp: "Certificate Download (HTTP)"
+ingress: true
+ingress_port: 8099
+hassio_api: true
+homeassistant_api: true
+panel_icon: mdi:microphone
+options:
+  log_level: info
+  audio_port: 8081
+  ha_address: "http://homeassistant:8123"
+schema:
+  log_level: list(trace|debug|info|warning|error)
+  audio_port: port
+  ha_address: str
