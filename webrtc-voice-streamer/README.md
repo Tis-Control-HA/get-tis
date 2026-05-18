@@ -16,7 +16,7 @@ If you are accessing your Home Assistant instance externally via HTTPS using the
 
 1. Navigate to **Settings** > **Add-ons** > **Add-on Store**.
 2. Click the **dots** (top-right) > **Repositories**.
-3. Add `https://github.com/KarimTIS/webrtc-voice-streamer` (if you haven't already).
+3. Add `https://github.com/Tis-Control-HA/get-tis` (if you haven't already).
 4. Find **"Voice Streaming Backend"** and click **Install**.
 5. Start the Add-on.
 6. Click **Open Web UI** on the Add-on page to access the Voice Streamer.
