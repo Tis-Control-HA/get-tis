@@ -34,10 +34,8 @@ export class MediaController {
   }
 
   async populateMediaPlayers() {
-    console.log("Fetching media players...");
     try {
       const players = await this.hassApi.fetchMediaPlayers();
-      console.log(`Found ${players.length} media players.`);
 
       this.mediaPlayerSelect.innerHTML =
         '<option value="">-- Select a Media Player --</option>';
