@@ -10,7 +10,6 @@ export class WebRTCManager {
   }
 
   async startMic() {
-    console.log("Requesting microphone access from browser...");
     try {
       this.mediaStream = await navigator.mediaDevices.getUserMedia({
         audio: {
@@ -21,15 +20,10 @@ export class WebRTCManager {
           channelCount: 1,
         },
       });
-      console.log("Microphone access granted.", this.mediaStream);
 
       this.peerConnection = new RTCPeerConnection({ iceServers: [] });
 
       this.peerConnection.oniceconnectionstatechange = () => {
-        console.log(
-          "ICE Connection State Change:",
-          this.peerConnection.iceConnectionState,
-        );
         if (
           this.peerConnection &&
           this.peerConnection.iceConnectionState === "failed"
@@ -39,7 +33,6 @@ export class WebRTCManager {
       };
 
       this.mediaStream.getAudioTracks().forEach((track) => {
-        console.log("Adding audio track to peer connection:", track.label);
         this.peerConnection.addTrack(track, this.mediaStream);
       });
 
@@ -51,20 +44,16 @@ export class WebRTCManager {
   }
 
   stopMic() {
-    console.log("Stopping microphone and cleaning up WebRTC resources...");
     if (this.mediaStream) {
       this.mediaStream.getTracks().forEach((t) => {
-        console.log("Stopping track:", t.kind, t.label);
         t.stop();
       });
       this.mediaStream = null;
-      console.log("Media stream stopped.");
     }
 
     if (this.peerConnection) {
       this.peerConnection.close();
       this.peerConnection = null;
-      console.log("Peer connection closed.");
     }
 
     this.signalingClient.sendStopStream();
@@ -104,9 +93,6 @@ export class WebRTCManager {
     if (this.peerConnection) {
       await this.peerConnection.setRemoteDescription(
         new RTCSessionDescription(answer),
-      );
-      console.log(
-        "Remote description set successfully. WebRTC connection established.",
       );
     } else {
       console.warn(
