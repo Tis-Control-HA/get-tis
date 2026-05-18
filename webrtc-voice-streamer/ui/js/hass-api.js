@@ -55,11 +55,9 @@ export class HassApi {
     const checkHass = () => {
       const hass = this.getHass();
       if (hass) {
-        console.log("Hass object found immediately. Proceeding.");
         onReady();
       } else if (retries < maxRetries) {
         retries++;
-        console.log(`Waiting for hass object... (Attempt ${retries}/${maxRetries})`);
         setTimeout(checkHass, interval);
       } else {
         console.warn("Hass object not found after retries. Falling back to backend API.");
@@ -72,15 +70,12 @@ export class HassApi {
   async playMedia(entity_id, media_content_id) {
     const hass = this.getHass();
     if (hass) {
-      console.log("Using HA Frontend to invoke media_player.play_media service.");
       await hass.callService("media_player", "play_media", {
         entity_id: entity_id,
         media_content_id: media_content_id,
         media_content_type: "music",
       });
-      console.log("HA Frontend play_media service call successful.");
     } else {
-      console.log("HA Frontend object not available. Falling back to backend /api/play_media.");
       const res = await fetch("./api/play_media", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -90,18 +85,14 @@ export class HassApi {
         const errorText = await res.text();
         throw new Error(`Status ${res.status}: ${errorText}`);
       }
-      console.log("Backend play_media API call successful.");
     }
   }
 
   async stopMedia(entity_id) {
     const hass = this.getHass();
     if (hass) {
-      console.log("Using HA Frontend to invoke media_player.media_stop service.");
       await hass.callService("media_player", "media_stop", { entity_id });
-      console.log("HA Frontend media_stop service call successful.");
     } else {
-      console.log("HA Frontend object not available. Falling back to backend /api/stop_media.");
       const res = await fetch("./api/stop_media", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -111,7 +102,6 @@ export class HassApi {
         const errorText = await res.text();
         throw new Error(`Status ${res.status}: ${errorText}`);
       }
-      console.log("Backend stop_media API call successful.");
     }
   }
 
