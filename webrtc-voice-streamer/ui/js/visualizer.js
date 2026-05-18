@@ -8,7 +8,6 @@ export class AudioVisualizer {
   }
 
   start(stream) {
-    console.log("Setting up audio visualization canvas.");
     this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
     this.analyser = this.audioContext.createAnalyser();
     this.analyser.fftSize = 256;
