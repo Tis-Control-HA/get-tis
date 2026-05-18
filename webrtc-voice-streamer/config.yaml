@@ -1,5 +1,5 @@
 name: "TIS Voice Streamer"
-version: "1.2.12"
+version: "1.2.13"
 slug: "webrtc-voice-streamer"
 description: "WebRTC-based real-time audio streaming backend for Home Assistant voice applications"
 url: "https://github.com/KarimTIS/webrtc-voice-streamer"
