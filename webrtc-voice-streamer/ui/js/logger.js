@@ -10,7 +10,6 @@ export function initLogger(containerId, logsId, clearBtnId) {
     clearErrorsBtn.onclick = () => {
       errorLogs.innerHTML = "";
       errorLogContainer.classList.add("hidden");
-      console.log("Error logs cleared.");
     };
   }
 }
